@@ -71,4 +71,49 @@ SELECT * FROM etudiants WHERE Arriver_le BETWEEN "2019/02/01" AND "2019/03/05";
 UPDATE etudiants SET nom = "Mercure" WHERE id = 6; 
 
 /*Jean Talus n’est plus un étudiant, le supprimer des résultats*/
-DELETE FROM etudiants WHERE id = 1; 
+DELETE FROM etudiants WHERE id = 1;
+
+/*Ajouter un clée primaire*/
+/*Modification de la table SQL "client"*/
+ALTER TABLE client ADD id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ADD banque_id INT NOT NULL,ADD FOREIGN KEY (banque_id) REFERENCES banque(id);
+
+/*Cannot add or update a child row: a foreign key constrain fail*/
+/*Erreur de clées*/
+
+/*Jointures SQL INNER JOIN REJOINDRE LA TABLE ON = WHERE*/
+SELECT banque.id, banque.nom, banque.adresse FROM banque INNER JOIN client  ON client.banque_id = banque.id;
+
+/*on fait coincider la donnée de la colone "banque_id" de client avec la colone "id" de "banque"*/
+SELECT banque.id, banque.nom, banque.adresse, client.nom, client.banque_id FROM banque INNER JOIN client ON client.banque_id = banque.id;
+
+/*presision*/
+SELECT banque.id, banque.nom AS nom_banque, banque.adresse, client.nom AS nom_client, client.banque_id FROM banque INNER JOIN client ON client.banque_id = banque.id;
+
+/*LEFT*/
+SELECT banque.id, banque.nom AS nom_banque, banque.adresse, client.nom AS nom_client, client.banque_id FROM banque LEFT JOIN client ON client.banque_id = banque.id;
+
+/*RIGHT*/
+SELECT banque.id, banque.nom AS nom_banque, banque.adresse, client.nom AS nom_client, client.banque_id FROM banque RIGHT JOIN client ON client.banque_id = banque.id;
+
+/*FULL JOIN*/
+SELECT banque.id, banque.nom AS nom_banque, banque.adresse, client.nom AS nom_client, client.banque_id FROM banque FULL JOIN client ON client.banque_id = banque.id;
+
+/*Trier les résultats client banque*/
+SELECT * FROM client INNER JOIN banque ON banque_id = client.banque_id;
+
+SELECT client.id, client.nom, client.date_de_naissance, banque.nom AS nom_banque FROM client INNER JOIN banque ON banque_id = client.banque_id;
+/*Ranger par ordre alphabetique*/
+SELECT client.id, client.nom, client.date_de_naissance, banque.nom AS nom_banque FROM client INNER JOIN banque ON banque_id = client.banque_id ORDER BY client.nom ASC;
+
+/*Trie par date de naissance*/
+SELECT client.id, client.nom, client.date_de_naissance, banque.nom AS nom_banque FROM client INNER JOIN banque ON banque.id = client.banque_id WHERE client.date_de_naissance > "2020/01/01" ORDER BY client.nom ASC;
+
+/*EXERCICE Voiture Garage nvl table*/
+/*Lister toutes les voitures ainsi que l’adresse du garage associé.*/
+SELECT * FROM voiture INNER JOIN garage ON garage.id_garage = voiture.garage_id; 
+
+/*Lister tous les garages ainsi que les marques des voitures associé.*/
+SELECT garage.*,garage.adresse FROM garage INNER JOIN voiture ON garage.id_garage = voiture.garage_id; 
+SELECT garage.*,voiture.marque FROM garage INNER JOIN voiture ON garage.id_garage = voiture.garage_id;
+
