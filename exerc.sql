@@ -117,3 +117,62 @@ SELECT * FROM voiture INNER JOIN garage ON garage.id_garage = voiture.garage_id;
 SELECT garage.*,garage.adresse FROM garage INNER JOIN voiture ON garage.id_garage = voiture.garage_id; 
 SELECT garage.*,voiture.marque FROM garage INNER JOIN voiture ON garage.id_garage = voiture.garage_id;
 
+
+/*-- Table des catégories*/
+CREATE TABLE categories (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(60)
+);
+
+/* Table des articles*/
+CREATE TABLE articles (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    titre VARCHAR(70),
+    contenu TEXT,
+    creer_le DATE
+);
+
+/* Tables des commentaires*/
+CREATE TABLE commentaires (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    commentaire TEXT,
+    ajouter_le DATE,
+    article_id INT,
+    FOREIGN KEY (article_id) REFERENCES articles(id)
+);
+
+/* Tables associatives*/
+CREATE TABLE articles_categories (
+    article_id INT,
+    categorie_id INT,
+    FOREIGN KEY (article_id) REFERENCES articles(id),
+    FOREIGN KEY (categorie_id) REFERENCES categories(id)
+);
+/*table assotiative*/
+/* table articles_categories*/
+INSERT INTO articles_categories (`article_id`,`categorie_id`) VALUES
+				(1,1),(2,3),(3,2),(1,2);
+
+/*Table assocatives*/
+CREATE TABLE articles_categories ( article_id INT, categorie_id INT, FOREIGN KEY (article_id) REFERENCES article(id), FOREIGN KEY (categorie_id) REFERENCES categorie(id) ); 
+
+/*Lister tous les articles ainsi que les catégories associées. INNER JOIN ...ON*/
+SELECT * FROM article INNER JOIN articles_categories ON articles_categories.article_id = article.id INNER JOIN categorie ON categorie.id = articles_categories.categorie_id;
+
+/*Lister tous les articles ainsi que les commentaires associés.*/
+
+SELECT * FROM article INNER JOIN commentaire ON commentaire.article_id = article.id;
+
+/*Lister tous les articles ainsi que les catégories et commentaires associés*/
+SELECT * FROM article INNER JOIN commentaire ON commentaire.id_article = article.id ;
+
+/* Lister tous les commentaires et l’ID de l’article associé (Renommer l’ID de l’article en
+« articleId » pour l’affichage des résultats, utiliser pour cela un alias).*/
+SELECT id,commentaire, ajouter_le, id_article AS articleId FROM commentaire; 
+
+/*Sélectionner le titre, la date de création de l’article et le nom de la catégorie étant reliés à la
+catégorie 2.*/
+SELECT article.titre, article.creer_le, categorie.nom FROM article INNER JOIN articles_categories ON articles_categories.article_id = article.id INNER JOIN categorie ON categorie.id = articles_categories.categorie_id WHERE categorie.id = 2; 
+
+
+/*Exercice #2*/
