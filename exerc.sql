@@ -175,4 +175,22 @@ catégorie 2.*/
 SELECT article.titre, article.creer_le, categorie.nom FROM article INNER JOIN articles_categories ON articles_categories.article_id = article.id INNER JOIN categorie ON categorie.id = articles_categories.categorie_id WHERE categorie.id = 2; 
 
 
-/*Exercice #2*/
+
+/*exercice Recette*/
+/*Q1*/
+SELECT * FROM utilisateur;
+
+/*Afficher les recettes et le nom de la catégorie liée à celle-ci*/
+SELECT * FROM recette INNER JOIN categorie ON categorie.id = recette.categorie_id;
+
+/*Afficher les recettes et ses ingrédients avec les quantités*/
+SELECT * FROM recette INNER JOIN recette_ingredients ON recette_ingredients.id_recette = recette.id
+INNER JOIN ingredient ON ingredient.id = recette_ingredients.id_ingredient;
+
+/*Afficher le nombre d'utilisateurs ayant créé des recettes*/
+SELECT COUNT(DISTINCT utilisateur_id) FROM recette;
+
+
+/*Afficher le nom des recettes créées par des utilisateurs dont la date de création
+de leur compte est antérieure au 01 novembre 2021*/
+SELECT recette.nom FROM recette INNER JOIN utilisateur ON utilisateur.id = recette.utilisateur_id WHERE utilisateur.date_de_creation < "2021/11/01";
